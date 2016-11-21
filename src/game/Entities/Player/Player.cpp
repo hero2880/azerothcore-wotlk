@@ -12682,7 +12682,7 @@ void Player::QuickEquipItem(uint16 pos, Item* pItem)
 }
 
 void Player::SetVisibleItemSlot(uint8 slot, Item* pItem)
-{ 
+{
     if (pItem)
     {
         SetUInt32Value(PLAYER_VISIBLE_ITEM_1_ENTRYID + (slot * 2), pItem->GetEntry());
@@ -12694,6 +12694,8 @@ void Player::SetVisibleItemSlot(uint8 slot, Item* pItem)
         SetUInt32Value(PLAYER_VISIBLE_ITEM_1_ENTRYID + (slot * 2), 0);
         SetUInt32Value(PLAYER_VISIBLE_ITEM_1_ENCHANTMENT + (slot * 2), 0);
     }
+
+    sScriptMgr->OnAfterPlayerSetVisibleItemSlot(this, slot, pItem);
 }
 
 void Player::VisualizeItem(uint8 slot, Item* pItem)
@@ -12818,6 +12820,8 @@ void Player::MoveItemFromInventory(uint8 bag, uint8 slot, bool update)
             it->RemoveFromWorld();
             it->DestroyForPlayer(this);
         }
+
+        sScriptMgr->OnAfterPlayerMoveItemFromInventory(this,it,bag,slot,update);
     }
 }
 
